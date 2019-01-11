@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+        <ListPreference
+            android:defaultValue="30"
+            android:entries="@array/interval_text"
+            android:entryValues="@array/interval_values"
+            android:key="TIME_INTERVAL"
+            android:summary="Sms Timer"
+            android:title="Interval" />
+
+        <Preference
+            android:id="@+id/about"
+            android:key="@string/aboutButton"
+            android:title="About" />
+
+</PreferenceScreen>

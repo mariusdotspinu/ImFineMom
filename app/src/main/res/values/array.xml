@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="interval_text">
+        <item name = "5">5 min</item>
+        <item name = "15">15 min</item>
+        <item name = "30">30 min</item>
+        <item name = "45">45 min</item>
+        <item name = "60">60 min</item>
+    </string-array>
+
+    <string-array name="interval_values">
+        <item>5</item>
+        <item>15</item>
+        <item>1</item>
+        <item>45</item>
+        <item>60</item>
+    </string-array>
+
+    <string-array name="languages">
+        <item>English</item>
+        <item>Spanish</item>
+        <item>French</item>
+        <item>Italian</item>
+        <item>Russian</item>
+        <item>Romanian</item>
+    </string-array>
+
+    <string-array name="index_languages">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+</resources>
