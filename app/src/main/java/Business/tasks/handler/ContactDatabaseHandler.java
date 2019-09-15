@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class ContactDatabaseHandler extends Handler {
 
     private void postExecute(Bundle contactBundle) {
         refreshContactAdapter(contactBundle);
-        contactsAdapter.notifyDataSetChanged();
+        contactsAdapter.changeView();
         progressBar.dismiss();
     }
 

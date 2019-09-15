@@ -21,6 +21,7 @@ public class Init {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL, name, importance);
             channel.setDescription(description);
+            channel.setSound(null, null);
 
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this

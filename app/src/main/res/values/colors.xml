@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimaryDark">#1976D2</color>
-    <color name="colorPrimaryLight">#BBDEFB</color>
-    <color name="colorPrimary">#2196F3</color>
-    <color name="colorAccent">#009688</color>
-    <color name="colorPrimaryDarkSettings">#007688</color>
+    <color name="colorPrimary">#FFF</color>
+    <color name="colorAccent">#FFF</color>
     <color name="primaryText">#313131</color>
-    <color name="colorBackground">#fafafa</color>
+    <color name="colorPrimaryDark">#ccc9c9</color>
+    <color name="colorBackground">#ffffff</color>
+    <color name="colorBackgroundSplash">#FFF</color>
     <color name="secondaryText">#1e1e1e</color>
-    <color name="colorDivider">#BDBDBD</color>
+    <color name="colorDivider">#3e3e3e</color>
+    <color name="colorPhoneNumber">#9e9e9f</color>
+    <color name="colorText">#7c7a7a</color>
+    <color name="colorTextPlaceholder">#a1a1a1</color>
+    <color name="colorTextFaded">#bcbcbc</color>
+    <color name="colorTextTitle">#26b970</color>
+    <color name="colorTextSubtitle">#d65858</color>
+    <color name="colorDeleteAction">#ab1818</color>
+    <color name="colorNotSending">#a11414</color>
+    <color name="colorSending">#14861e</color>
+    <color name="status_off">#e73c3c</color>
+    <color name="status_on">#138950</color>
+    <color name="action_click">#393939</color>
 
 </resources>

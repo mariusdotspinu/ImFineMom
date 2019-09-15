@@ -5,11 +5,10 @@
             android:entries="@array/interval_text"
             android:entryValues="@array/interval_values"
             android:key="TIME_INTERVAL"
-            android:summary="Sms Timer"
+            android:summary="The amount of time to be elapsed, before sending sms."
             android:title="Interval" />
 
         <Preference
-            android:id="@+id/about"
             android:key="@string/aboutButton"
             android:title="About" />
 

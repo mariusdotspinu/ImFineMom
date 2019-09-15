@@ -6,6 +6,7 @@ public abstract class Constants {
     public static final byte MAX_SIZE = 15;
 
     public static final byte NOTIFICATION_IDENTIFIER = 1;
+    public static final byte SMS_SENT_NOTIFICATION_ID = 2;
     public static final byte CONTACT_REQ_CODE = 1;
     public static final byte SETTINGS_REQ_CODE = 2;
     public static final short DEFAULT_MILLIS_FUTURE = 1000;
@@ -31,6 +32,7 @@ public abstract class Constants {
     public static final String KEY_DELETE = "contact$delete";
     public static final String KEY_UPDATE = "contact$update";
 
+    public static final String SNACKBAR_MESSAGE = "<font color=\"#ffffff\">%s</font>";
 
     public static String INTERVAL_PREF_KEY = "TIME_INTERVAL";
 
@@ -40,7 +42,6 @@ public abstract class Constants {
             {Manifest.permission.READ_CONTACTS,
                     Manifest.permission.SEND_SMS,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.READ_PHONE_STATE};
+                    Manifest.permission.ACCESS_FINE_LOCATION};
 
 }

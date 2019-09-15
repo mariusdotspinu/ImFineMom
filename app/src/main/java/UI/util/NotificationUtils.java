@@ -3,7 +3,7 @@ package UI.util;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 
 public class NotificationUtils {
 
@@ -31,6 +31,7 @@ public class NotificationUtils {
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(contentTitle)
                 .setContentText(contentText)
-                .setContentIntent(pendingIntent);
+                .setContentIntent(pendingIntent)
+                .setOnlyAlertOnce(true);
     }
 }

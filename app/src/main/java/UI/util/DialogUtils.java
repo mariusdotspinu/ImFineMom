@@ -2,11 +2,10 @@ package UI.util;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import commons.util.ResourceUtils;
 import mspinu.imfinemom.R;
 
 public abstract class DialogUtils {
@@ -15,24 +14,18 @@ public abstract class DialogUtils {
                                  DialogInterface.OnClickListener clickListener) {
         new AlertDialog.Builder(context)
             .setMessage(message)
-            .setPositiveButton(R.string.cast_tracks_chooser_dialog_ok, clickListener)
-            .setNegativeButton(R.string.cast_tracks_chooser_dialog_cancel, clickListener)
+            .setPositiveButton(R.string.OK, clickListener)
             .create()
             .show();
     }
 
-    public static void showAboutDialog(Context context){
+    public static void showSimpleDialog(Context context, String message, String title, DialogInterface.OnClickListener okListener, DialogInterface.OnClickListener cancelListener){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setPositiveButton(R.string.cast_tracks_chooser_dialog_ok,
-                new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-        builder.setTitle(R.string.aboutButton);
+        builder.setPositiveButton(R.string.OK, okListener);
+        builder.setNegativeButton(R.string.CANCEL, cancelListener);
+        builder.setTitle(title);
         AlertDialog dialog = builder.create();
-        dialog.setMessage(ResourceUtils.getStringFrom(context, R.string.about_message));
+        dialog.setMessage(message);
         dialog.show();
     }
 

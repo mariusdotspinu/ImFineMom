@@ -2,9 +2,8 @@ package Business.Services.util;
 
 import android.content.Context;
 import android.os.CountDownTimer;
-import android.support.design.widget.Snackbar;
+import com.google.android.material.snackbar.Snackbar;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 
@@ -14,7 +13,6 @@ import Business.Facade.ContactFacadeImpl;
 import Business.Listeners.LocationListener;
 import Business.Services.core.LocationSenderService;
 import UI.Activities.MainActivity;
-import commons.dto.ContactDto;
 import mspinu.imfinemom.R;
 
 public class SmsTimer extends CountDownTimer {
@@ -22,18 +20,20 @@ public class SmsTimer extends CountDownTimer {
     private FusedLocationProviderClient client;
     private Context context;
     private List<String> phoneNumbersOfCheckedContacts;
+    private boolean interrupted;
 
     public SmsTimer(long millisInFuture, long countDownInterval, Context context ,
-             FusedLocationProviderClient client) {
-
+             FusedLocationProviderClient client, boolean interrupted) {
         super(millisInFuture, countDownInterval);
         this.client = client;
         this.context = context;
+        this.interrupted = interrupted;
     }
 
     @Override
     public void onTick(long millisUntilFinished) {
         Log.d("MILIS", String.valueOf(millisUntilFinished));
+        LocationSenderService.getInstance().setRemainingMilis(millisUntilFinished);
     }
 
     @Override
@@ -42,11 +42,10 @@ public class SmsTimer extends CountDownTimer {
     }
 
     private void getLastLocation(){
-
         try {
             setCheckedContacts();
             client.getLastLocation().addOnSuccessListener(new LocationListener(context,
-                    phoneNumbersOfCheckedContacts, this));
+                    phoneNumbersOfCheckedContacts, interrupted));
         }
         catch (InterruptedException ie){
             ie.printStackTrace();

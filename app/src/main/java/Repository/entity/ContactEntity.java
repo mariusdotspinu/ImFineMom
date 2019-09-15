@@ -1,8 +1,8 @@
 package Repository.entity;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 @Entity(tableName = "CONTACT")
 public class ContactEntity {
@@ -18,6 +18,9 @@ public class ContactEntity {
 
     @ColumnInfo(name = "SELECTED")
     private boolean isSelected;
+
+    @ColumnInfo(name = "PHOTO")
+    private String photoBase64Url;
 
     public long getId() {
         return id;
@@ -49,5 +52,13 @@ public class ContactEntity {
 
     public void setIsSelected(boolean isSelected) {
         this.isSelected = isSelected;
+    }
+
+    public String getPhotoBase64Url() {
+        return photoBase64Url;
+    }
+
+    public void setPhotoBase64Url(String photoBase64Url) {
+        this.photoBase64Url = photoBase64Url;
     }
 }
