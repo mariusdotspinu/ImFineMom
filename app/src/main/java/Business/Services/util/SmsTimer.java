@@ -21,8 +21,9 @@ public class SmsTimer extends CountDownTimer {
     private Context context;
     private List<String> phoneNumbersOfCheckedContacts;
     private boolean interrupted;
+    private static SmsTimer smsTimer;
 
-    public SmsTimer(long millisInFuture, long countDownInterval, Context context ,
+    private SmsTimer(long millisInFuture, long countDownInterval, Context context ,
              FusedLocationProviderClient client, boolean interrupted) {
         super(millisInFuture, countDownInterval);
         this.client = client;
@@ -30,9 +31,18 @@ public class SmsTimer extends CountDownTimer {
         this.interrupted = interrupted;
     }
 
+    public static SmsTimer getInstance(long millisInFuture, long countDownInterval, Context context ,
+                                       FusedLocationProviderClient client, boolean interrupted){
+        if (smsTimer != null){
+            smsTimer.cancel();
+        }
+        smsTimer = new SmsTimer(millisInFuture, countDownInterval, context , client, interrupted);
+        return smsTimer;
+    }
+
     @Override
     public void onTick(long millisUntilFinished) {
-        Log.d("MILIS", String.valueOf(millisUntilFinished));
+        Log.d("SECONDS", String.valueOf(millisUntilFinished / 1000));
         LocationSenderService.getInstance().setRemainingMilis(millisUntilFinished);
     }
 
@@ -44,8 +54,6 @@ public class SmsTimer extends CountDownTimer {
     private void getLastLocation(){
         try {
             setCheckedContacts();
-            client.getLastLocation().addOnSuccessListener(new LocationListener(context,
-                    phoneNumbersOfCheckedContacts, interrupted));
         }
         catch (InterruptedException ie){
             ie.printStackTrace();
@@ -62,6 +70,8 @@ public class SmsTimer extends CountDownTimer {
             public void run() {
                 phoneNumbersOfCheckedContacts = new ContactFacadeImpl(context)
                         .getPhoneNumbersOfCheckedContacts();
+                client.getLastLocation().addOnSuccessListener(new LocationListener(context,
+                        phoneNumbersOfCheckedContacts, smsTimer, interrupted));
             }
         });
         thread.start();

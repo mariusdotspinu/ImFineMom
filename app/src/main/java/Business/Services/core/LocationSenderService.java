@@ -73,7 +73,7 @@ public class LocationSenderService extends Service
                     pendingIntent, NOTIFICATION_CHANNEL));
             long intervalMillis = intent.getExtras().getLong("timerValue");
             boolean interrupted = intent.getExtras().getBoolean("interrupted");
-        smsTimer = new SmsTimer(intervalMillis, DEFAULT_MILLIS_FUTURE , this, client, interrupted);
+        smsTimer = SmsTimer.getInstance(intervalMillis, DEFAULT_MILLIS_FUTURE , this, client, interrupted);
         smsTimer.start();
         return START_NOT_STICKY;
     }
@@ -93,7 +93,7 @@ public class LocationSenderService extends Service
         String prefKeyValue = sharedPreferences.getString(INTERVAL_PREF_KEY, null);
             if (prefKeyValue != null){
                 smsTimer.cancel();
-                smsTimer = new SmsTimer(getMillisFrom(prefKeyValue), DEFAULT_MILLIS_FUTURE,
+                smsTimer = SmsTimer.getInstance(getMillisFrom(prefKeyValue), DEFAULT_MILLIS_FUTURE,
                         this, client, false);
             }
     }

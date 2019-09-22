@@ -3,11 +3,12 @@ package Business.Listeners;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.provider.Settings;
+
+import Business.Services.core.LocationSenderService;
 import androidx.core.app.NotificationManagerCompat;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -42,26 +43,28 @@ public class LocationListener implements OnSuccessListener<Location> {
     private boolean interrupted;
     private SmsTimer smsTimer;
 
-    public LocationListener(Context context, List<String> phoneNumbers, boolean interrupted) {
+    public LocationListener(Context context, List<String> phoneNumbers, SmsTimer smsTimer, boolean interrupted) {
 
         this.context = context;
         this.phoneNumbers = phoneNumbers;
         this.interrupted = interrupted;
+        this.smsTimer = smsTimer;
     }
 
     @Override
     public void onSuccess(Location location) {
         shareStatus(location);
         if (interrupted) {
-            SharedPreferences sharedPreferences = Locator.getPreferences(context);
-            String interval = sharedPreferences.getString(INTERVAL_PREF_KEY, DEFAULT_TIMER_VALUE);
             interrupted = false;
             smsTimer.cancel();
-            smsTimer = new SmsTimer(getMillisFrom(interval), DEFAULT_MILLIS_FUTURE, context, LocationServices.getFusedLocationProviderClient(context), interrupted);
+            smsTimer = SmsTimer.getInstance(LocationSenderService.getInstance().getRemainingMilis(), DEFAULT_MILLIS_FUTURE, context, LocationServices.getFusedLocationProviderClient(context), interrupted);
+        }
+        else{
+            String interval = Locator.getPreferences(context).getString(INTERVAL_PREF_KEY, DEFAULT_TIMER_VALUE);
+            smsTimer = SmsTimer.getInstance(getMillisFrom(interval), DEFAULT_MILLIS_FUTURE, context, LocationServices.getFusedLocationProviderClient(context), interrupted);
         }
         smsTimer.start();
     }
-
 
     private void shareStatus(Location location) {
         if (location != null) {
