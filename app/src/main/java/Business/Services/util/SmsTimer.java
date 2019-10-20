@@ -79,7 +79,7 @@ public class SmsTimer extends CountDownTimer {
                 client.getLastLocation().addOnSuccessListener(new LocationListener(context,
                         phoneNumbersOfCheckedContacts, smsTimer, interrupted));
             }
-        });Lo
+        });
         thread.start();
         thread.join();
     }
