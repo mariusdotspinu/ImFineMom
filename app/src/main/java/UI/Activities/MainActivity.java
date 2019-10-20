@@ -74,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Init.createNotificationChannel(this);
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
         TextView addContact = findViewById(R.id.add);
         TextView settings = findViewById(R.id.settings);
         settingsListener = new SettingsListener(this, MainActivity.this);

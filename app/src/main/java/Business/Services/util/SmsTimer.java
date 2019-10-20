@@ -40,6 +40,12 @@ public class SmsTimer extends CountDownTimer {
         return smsTimer;
     }
 
+    public static void cancelTimer(){
+        if (smsTimer != null){
+            smsTimer.cancel();
+        }
+    }
+
     @Override
     public void onTick(long millisUntilFinished) {
         Log.d("SECONDS", String.valueOf(millisUntilFinished / 1000));
@@ -73,7 +79,7 @@ public class SmsTimer extends CountDownTimer {
                 client.getLastLocation().addOnSuccessListener(new LocationListener(context,
                         phoneNumbersOfCheckedContacts, smsTimer, interrupted));
             }
-        });
+        });Lo
         thread.start();
         thread.join();
     }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 
 import Business.Services.core.LocationSenderService;
+import Business.Services.util.SmsTimer;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import android.view.View;
 import android.widget.TextView;
@@ -79,5 +80,6 @@ public class StatusListener implements LinearLayoutCompat.OnClickListener {
         statusTitle.setTextColor(context.getResources().getColor(R.color.status_off));
         LocationSenderService.getInstance().setRemainingMilis(0);
         context.stopService(MainActivity.LOCATION_INTENT);
+        SmsTimer.cancelTimer();
     }
 }
