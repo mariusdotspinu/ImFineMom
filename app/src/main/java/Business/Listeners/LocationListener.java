@@ -1,28 +1,28 @@
 package Business.Listeners;
 
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.provider.Settings;
 
 import Business.Services.core.LocationSenderService;
 import androidx.core.app.NotificationManagerCompat;
-import android.telephony.SmsManager;
+
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import Business.Locator;
 import Business.Services.util.SmsTimer;
 import UI.util.NotificationUtils;
 import commons.util.ResourceUtils;
@@ -30,7 +30,6 @@ import mspinu.imfinemom.R;
 
 import static Business.Services.util.Utils.getMillisFrom;
 import static commons.util.Constants.DEFAULT_MILLIS_FUTURE;
-import static commons.util.Constants.DEFAULT_SMS_APP;
 import static commons.util.Constants.DEFAULT_TIMER_VALUE;
 import static commons.util.Constants.INTERVAL_PREF_KEY;
 import static commons.util.Constants.NOTIFICATION_CHANNEL;
@@ -42,6 +41,7 @@ public class LocationListener implements OnSuccessListener<Location> {
     private List<String> phoneNumbers;
     private boolean interrupted;
     private SmsTimer smsTimer;
+    private int numberOfSmsSent = 0;
 
     public LocationListener(Context context, List<String> phoneNumbers, SmsTimer smsTimer, boolean interrupted) {
 
@@ -60,7 +60,7 @@ public class LocationListener implements OnSuccessListener<Location> {
             smsTimer = SmsTimer.getInstance(LocationSenderService.getInstance().getRemainingMilis(), DEFAULT_MILLIS_FUTURE, context, LocationServices.getFusedLocationProviderClient(context), interrupted);
         }
         else{
-            String interval = Locator.getPreferences(context).getString(INTERVAL_PREF_KEY, DEFAULT_TIMER_VALUE);
+            String interval = Business.Locator.getPreferences(context).getString(INTERVAL_PREF_KEY, DEFAULT_TIMER_VALUE);
             smsTimer = SmsTimer.getInstance(getMillisFrom(interval), DEFAULT_MILLIS_FUTURE, context, LocationServices.getFusedLocationProviderClient(context), interrupted);
         }
         smsTimer.start();
@@ -70,7 +70,7 @@ public class LocationListener implements OnSuccessListener<Location> {
         if (location != null) {
             String locationMessage = getLocationMessage(location);
             if (locationMessage != null) {
-                sendSms(this.phoneNumbers, locationMessage);
+                sendSmsRequest(this.phoneNumbers, locationMessage);
                 notifyUserOfSentMessages();
             }
         } else {
@@ -79,28 +79,32 @@ public class LocationListener implements OnSuccessListener<Location> {
         }
     }
 
-    private void sendSms(List<String> phoneNumbers, String message) {
-        SmsManager smsManager = SmsManager.getDefault();
-        for (String phone : phoneNumbers) {
-            ArrayList<String> parts = smsManager.divideMessage(message);
-            smsManager.sendMultipartTextMessage(phone, null, parts, null,
-                    null);
+    private void sendSmsRequest(List<String> phoneNumbers, String message){
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url = buildRequestUrl(phoneNumbers, message);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                response -> {},
+                error -> {});
+        queue.add(stringRequest);
+    }
+
+    private String buildRequestUrl(List<String> phoneNumbers, String message){
+        String baseUrl = "http://imfinemom.herokuapp.com/send?numbers=PHONE&message=MESSAGE";
+        StringBuilder builder = new StringBuilder();
+        for(String phoneNumber : phoneNumbers){
+            builder.append(phoneNumber).append(';');
         }
+        builder.deleteCharAt(builder.length() - 1);
+        return baseUrl.replace("PHONE", builder.toString()).replace("MESSAGE", message);
     }
 
     private void notifyUserOfSentMessages() {
-        String defaultSmsApplication = Settings.Secure.getString(context.getContentResolver(), DEFAULT_SMS_APP);
-        Intent smsIntent = context.getPackageManager().getLaunchIntentForPackage(defaultSmsApplication);
-        smsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent smsPendingIntent = PendingIntent.getActivity(
-                context, 0, smsIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
         NotificationManagerCompat.from(context).notify(SMS_SENT_NOTIFICATION_ID,
                 NotificationUtils.buildMessageStatusNotification(context, R.drawable.baseline_track_changes_black_24,
                         ResourceUtils.getStringFrom(context, R.string.message_sent),
                         ResourceUtils.getStringFrom(context, R.string.message_status),
-                        ResourceUtils.getStringFrom(context, R.string.notification_tap_text),
-                        smsPendingIntent,
+                        String.valueOf(++numberOfSmsSent),
+                        null,
                         NOTIFICATION_CHANNEL));
     }
 

@@ -17,6 +17,7 @@
     <color name="colorTextSubtitle">#d65858</color>
     <color name="colorDeleteAction">#ab1818</color>
     <color name="colorNotSending">#a11414</color>
+    <color name="colorDialogSpinner">#64C3F5</color>
     <color name="colorSending">#14861e</color>
     <color name="status_off">#e73c3c</color>
     <color name="status_on">#138950</color>

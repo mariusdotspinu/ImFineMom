@@ -9,7 +9,7 @@ import mspinu.imfinemom.R;
 
 import static commons.util.Constants.NOTIFICATION_CHANNEL;
 
-public class Init {
+public class Locator {
 
     public static void createNotificationChannel(Context context) {
 

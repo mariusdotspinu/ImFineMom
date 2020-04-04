@@ -32,6 +32,8 @@ public abstract class Constants {
     public static final String KEY_DELETE = "contact$delete";
     public static final String KEY_UPDATE = "contact$update";
 
+    public static final String FIRST_STARTUP = "firstStartup";
+
     public static final String SNACKBAR_MESSAGE = "<font color=\"#ffffff\">%s</font>";
 
     public static String INTERVAL_PREF_KEY = "TIME_INTERVAL";

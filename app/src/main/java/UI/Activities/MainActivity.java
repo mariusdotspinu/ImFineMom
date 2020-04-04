@@ -2,19 +2,24 @@ package UI.Activities;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
+
+import Business.Broadcasts.ConnectivityChangeReceiver;
+import Business.Services.util.SmsTimer;
+import Business.tasks.handler.InternetConnectionHandler;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,13 +39,12 @@ import Business.Callbacks.DeleteContactCallback;
 import Business.Facade.ContactFacadeImpl;
 import Business.Listeners.SettingsListener;
 import Business.Listeners.StatusListener;
-import Business.Locator;
 import Business.tasks.core.ContactDatabaseTask;
 import Repository.database.ContactDatabase;
 import UI.Adapters.ContactsAdapter;
 import Business.Listeners.AddListener;
 import Business.Services.core.LocationSenderService;
-import UI.Init;
+import UI.Locator;
 import UI.util.CommonUtils;
 import commons.dto.ContactDto;
 import commons.util.ResourceUtils;
@@ -68,12 +72,14 @@ public class MainActivity extends AppCompatActivity {
     private int orientation;
     private AddListener addListener;
     private SettingsListener settingsListener;
+    private ConnectivityChangeReceiver connectivityChangeReceiver;
+    private InternetConnectionHandler internetConnectionHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Init.createNotificationChannel(this);
+        Locator.createNotificationChannel(this);
         TextView addContact = findViewById(R.id.add);
         TextView settings = findViewById(R.id.settings);
         settingsListener = new SettingsListener(this, MainActivity.this);
@@ -84,11 +90,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rec_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         LOCATION_INTENT = new Intent(this, LocationSenderService.class);
-        sharedPreferences = Locator.getPreferences(this);
+        sharedPreferences = Business.Locator.getPreferences(this);
         LOCATION_INTENT.putExtra("timerValue", getMillisFrom(sharedPreferences.getString(INTERVAL_PREF_KEY, DEFAULT_TIMER_VALUE)));
         contactFacade = new ContactFacadeImpl(this);
         contactsAdapter = new ContactsAdapter(contactFacade, this);
-        contactsAdapter.setViews(new LinkedList<View>(Arrays.asList(contactsPlaceholder, recyclerView, switchStatus)));
+        contactsAdapter.setViews(new LinkedList<>(Arrays.asList(contactsPlaceholder, recyclerView, switchStatus)));
         new ContactDatabaseTask(this.getClass().getSimpleName(), contactFacade, null,
                 contactsAdapter).execute();
         addListener = new AddListener(this, contactsAdapter);
@@ -100,12 +106,15 @@ public class MainActivity extends AppCompatActivity {
                 new DeleteContactCallback(this, contactFacade, contactsAdapter).getDeleteSimpleCallback());
         itemTouchHelper.attachToRecyclerView(recyclerView);
         handlePermissions();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        internetConnectionHandler = new InternetConnectionHandler(this);
+        connectivityChangeReceiver = new ConnectivityChangeReceiver(internetConnectionHandler);
+        registerReceiver(connectivityChangeReceiver, intentFilter);
     }
 
     private void handlePermissions() {
         Dexter.withActivity(this)
                 .withPermissions(
-                        Manifest.permission.SEND_SMS,
                         Manifest.permission.READ_CONTACTS,
                         Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.ACCESS_FINE_LOCATION
@@ -161,8 +170,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         stopService(MainActivity.LOCATION_INTENT);
+        SmsTimer.cancelTimer();
         ContactDatabase.destroyInstance();
         super.onDestroy();
+        unregisterReceiver(connectivityChangeReceiver);
     }
 
     @Override
