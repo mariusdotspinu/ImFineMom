@@ -14,6 +14,7 @@ import java.util.List;
 
 import commons.dto.ContactDto;
 import commons.util.ResourceUtils;
+import es.dmoral.toasty.Toasty;
 import mspinu.imfinemom.R;
 
 public class CommonUtils {
@@ -33,7 +34,7 @@ public class CommonUtils {
     public static boolean isDuplicate(Context context, List<ContactDto> contacts ,String phoneNumber){
         for (ContactDto contactDto : contacts){
             if (contactDto.getPhoneNumber().equals(phoneNumber)){
-                Toast.makeText(context, ResourceUtils.getStringFrom(context,
+                Toasty.error(context, ResourceUtils.getStringFrom(context,
                         R.string.duplicate_message), Toast.LENGTH_LONG).show();
                 return true;
             }

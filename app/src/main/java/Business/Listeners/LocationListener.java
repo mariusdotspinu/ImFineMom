@@ -26,6 +26,7 @@ import java.util.Locale;
 import Business.Services.util.SmsTimer;
 import UI.util.NotificationUtils;
 import commons.util.ResourceUtils;
+import es.dmoral.toasty.Toasty;
 import mspinu.imfinemom.R;
 
 import static Business.Services.util.Utils.getMillisFrom;
@@ -74,7 +75,7 @@ public class LocationListener implements OnSuccessListener<Location> {
                 notifyUserOfSentMessages();
             }
         } else {
-            Toast.makeText(context, R.string.location_not_found,
+            Toasty.warning(context, R.string.location_not_found,
                     Toast.LENGTH_SHORT).show();
         }
     }

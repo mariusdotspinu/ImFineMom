@@ -11,9 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-import java.net.URLEncoder;
-
-import mspinu.imfinemom.R;
+import mspinu.imfinemom.R;;
 
 
 public class Holder extends RecyclerView.ViewHolder {
@@ -46,12 +44,14 @@ public class Holder extends RecyclerView.ViewHolder {
         this.isSending = isSending;
         TextView textView = contactLayout.findViewById(R.id.check);
         if (isSending){
-            textView.setText("Sending");
             textView.setTextColor(this.contactLayout.getResources().getColor(R.color.colorSending));
+            textView.setText("\u2713");
+            textView.setTextSize(20);
         }
         else{
-            textView.setText("Not Sending");
             textView.setTextColor(this.contactLayout.getResources().getColor(R.color.colorNotSending));
+            textView.setText("Tap to select");
+            textView.setTextSize(15);
         }
     }
 

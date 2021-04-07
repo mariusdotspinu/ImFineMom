@@ -37,7 +37,7 @@ public class StatusListener implements LinearLayoutCompat.OnClickListener {
     public void onClick(View view) {
         final TextView textView = view.getRootView().findViewById(R.id.status_switch);
         if (textView.getText().equals("Off")) {
-            DialogUtils.showSimpleDialog(context, "This will start sending sms to your selected contacts.", "Start service ?",
+            DialogUtils.showSimpleDialog(context, "This will start sending sms to your selected contacts.", "Start service?",
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -52,7 +52,7 @@ public class StatusListener implements LinearLayoutCompat.OnClickListener {
                         }
                     });
         } else {
-            DialogUtils.showSimpleDialog(context, "This will stop sending sms to your selected contacts.", "Stop service ?",
+            DialogUtils.showSimpleDialog(context, "This will stop sending sms to your selected contacts.", "Stop service?",
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

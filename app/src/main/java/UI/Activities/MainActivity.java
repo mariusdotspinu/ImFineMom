@@ -48,6 +48,7 @@ import UI.Locator;
 import UI.util.CommonUtils;
 import commons.dto.ContactDto;
 import commons.util.ResourceUtils;
+import es.dmoral.toasty.Toasty;
 import mspinu.imfinemom.R;
 
 import static Business.Services.util.Utils.getMillisFrom;
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPermissionsChecked(MultiplePermissionsReport report) {
                 if (!report.areAllPermissionsGranted()) {
-                    Toast.makeText(MainActivity.this,
+                    Toasty.error(MainActivity.this,
                             "One or more permissions denied ! All must be allowed for the app the be properly used.", Toast.LENGTH_LONG).show();
                 }
                 else if (report.areAllPermissionsGranted()){
@@ -193,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK && SETTINGS_CHANGED.equals(String.valueOf(data.getData()))) {
                     if (statusListener.isServiceStarted()) {
                         toggleServiceOff();
-                        Toast.makeText(this, ResourceUtils.getStringFrom(this,
+                        Toasty.info(this, ResourceUtils.getStringFrom(this,
                                 R.string.restart_service_message), Toast.LENGTH_LONG).show();
                     }
                 }

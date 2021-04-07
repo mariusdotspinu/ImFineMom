@@ -6,7 +6,6 @@
     <color name="primaryText">#313131</color>
     <color name="colorPrimaryDark">#ccc9c9</color>
     <color name="colorBackground">#ffffff</color>
-    <color name="colorBackgroundSplash">#FFF</color>
     <color name="secondaryText">#1e1e1e</color>
     <color name="colorDivider">#3e3e3e</color>
     <color name="colorPhoneNumber">#9e9e9f</color>
@@ -16,11 +15,12 @@
     <color name="colorTextTitle">#26b970</color>
     <color name="colorTextSubtitle">#d65858</color>
     <color name="colorDeleteAction">#ab1818</color>
-    <color name="colorNotSending">#a11414</color>
+    <color name="colorNotSending">#5E5E5E</color>
     <color name="colorDialogSpinner">#64C3F5</color>
     <color name="colorSending">#14861e</color>
     <color name="status_off">#e73c3c</color>
     <color name="status_on">#138950</color>
     <color name="action_click">#393939</color>
+    <color name="verify">#411A79</color>
 
 </resources>

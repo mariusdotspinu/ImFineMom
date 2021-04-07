@@ -27,7 +27,7 @@ public class CheckChangeListener implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (((TextView)view.findViewById(R.id.check)).getText().equals("Not Sending")){
+        if (((TextView)view.findViewById(R.id.check)).getText().equals("Tap to select")){
             holder.setSending(true);
             contacts.get(holder.getAdapterPosition()).setSelected(true);
             new ContactDatabaseTask(this.getClass().getSimpleName(), contactFacade, contacts.get(holder.getAdapterPosition()),

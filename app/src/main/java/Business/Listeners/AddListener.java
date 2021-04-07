@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import UI.Activities.MainActivity;
 import UI.Adapters.ContactsAdapter;
+import es.dmoral.toasty.Toasty;
 import mspinu.imfinemom.R;
 
 import static commons.util.Constants.CONTACT_REQ_CODE;
@@ -40,7 +41,7 @@ public class AddListener implements View.OnClickListener {
             }
         }
         else {
-            Toast.makeText(context,
+            Toasty.error(context,
                     "One or more permissions denied ! All must be allowed for the app the be properly used.", Toast.LENGTH_LONG).show();
         }
     }

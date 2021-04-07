@@ -20,7 +20,7 @@
     <string name="status">Status :</string>
     <string name="status_on">Sending Location</string>
     <string name="status_off">Off</string>
-    <string name="edit">(tap to edit)</string>
+    <string name="edit">(Tap to change)</string>
     <string name="message_status">Done</string>
     <string name="notification_tap_text">Tap to view message(s)</string>
     <string name="restart_service_message">The Service has been toggled off , since the time
@@ -32,7 +32,7 @@
     <string name="no_internet">Oops ! \n\n Please, check your internet connection.</string>
     <string name="placeholder_body">Add someone who cares about you.</string>
     <string name="placeholder_footer">Probably just your mom…</string>
-    <string name="not_sending">Not Sending</string>
+    <string name="not_sending">Tap to select</string>
     <string name="OK">Ok</string>
     <string name="CANCEL">Cancel</string>
 </resources>
